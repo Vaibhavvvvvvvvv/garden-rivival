@@ -7,10 +7,11 @@ const LocalStrategy = require("passport-local").Strategy;
 const bcrypt = require("bcryptjs");
 const path = require("path");
 
-// ✅ Import User model (check the correct path)
-const User = require("../models/User"); 
+// ✅ Import Models
+const User = require("./models/User");
+const GarbageCollection = require("./models/garbageModel"); // ✅ Keep only this one!
 
-// ✅ Initialize Express App FIRST before using `app`
+// ✅ Initialize Express App
 const app = express();
 const PORT = 3000;
 
@@ -22,7 +23,7 @@ mongoose.connect("mongodb://127.0.0.1:27017/auth_db", {
 .then(() => console.log("✅ MongoDB connected"))
 .catch(err => console.error("❌ MongoDB connection error:", err));
 
-// ✅ Middleware setup (BEFORE passport)
+// ✅ Middleware setup
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
@@ -38,7 +39,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
 
-// ✅ Serve Static Files (Ensure `public` directory exists)
+// ✅ Serve Static Files
 app.use(express.static(path.join(__dirname, "public")));
 
 // ✅ Passport Authentication Strategy
@@ -66,6 +67,16 @@ passport.deserializeUser(async (id, done) => {
     }
 });
 
+// ✅ API to Get Garbage Data
+app.get("/api/garbage-data", async (req, res) => {
+    try {
+        const garbageData = await GarbageCollection.find();
+        res.json(garbageData);
+    } catch (error) {
+        res.status(500).json({ message: "Error fetching data", error });
+    }
+});
+
 // ✅ Authentication Routes
 app.post("/signup", async (req, res) => {
     try {
@@ -79,7 +90,6 @@ app.post("/signup", async (req, res) => {
         const newUser = new User({ username, password: hashedPassword });
 
         await newUser.save();
-        // res.status(201).json({ message: "User registered successfully" });
         res.redirect("/login.html");
         
     } catch (error) {
@@ -99,8 +109,7 @@ app.post("/login", (req, res, next) => {
     })(req, res, next);
 });
 
-
-// ✅ Logout Route (Use callback for new Passport versions)
+// ✅ Logout Route
 app.get("/logout", (req, res, next) => {
     req.logout((err) => {
         if (err) return next(err);
@@ -113,8 +122,7 @@ app.get("/check-auth", (req, res) => {
     res.json({ isAuthenticated: req.isAuthenticated() });
 });
 
-
-// ✅ Protect Routes (Redirect Unauthenticated Users)
+// ✅ Protect Routes
 app.get("/live", (req, res) => {
     if (!req.isAuthenticated()) return res.redirect("/login.html");
     res.sendFile(path.join(__dirname, "public", "live.html"));
