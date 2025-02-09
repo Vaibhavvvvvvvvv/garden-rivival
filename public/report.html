@@ -28,8 +28,8 @@
                 </div>
                 <span class="space">
                     <ul>
-                        <li><a href="login.html"class="hero-btn">Sign In</a></li>
-                        <li><a href="sigin.html" class="hero-btn">Sign Up</a></li>
+                        <!-- <li><a href="login.html"class="hero-btn">Sign In</a></li> -->
+                        <!-- <li><a href="sigin.html" class="hero-btn">Sign Up</a></li> -->
                     </ul>
                 </span>
                <i class="fa fa-bars"onclick="showMenu()"></i>
@@ -37,26 +37,28 @@
             <h1>Reports</h1>
         </section>
         <!--------------------------------------------------Report content------------------------------------------------------------------>
-       <section class="blog-content">
-        <div class="row">
-            <div class="blog-left">
-                <img src="images/bar.jpeg">
-            <!-------------------------------------Note box code start----------------------------------------->
-                     <div class="comment-box">
+        <section class="blog-content">
+            <div class="row">
+                <div class="blog-left">
+                    <canvas id="barChart"></canvas> <!-- Bar Chart -->
+                    <!-------------------------------------Note box code start----------------------------------------->
+                    <div class="comment-box">
                         <h3>Add Notes</h3>
                         <form class="comment-form">
-                            <textarea rows="5"placeholder="Your Notes"></textarea>
-                            <button type="submit"class="hero-btn green-btn">Save notes</button>
+                            <textarea rows="5" placeholder="Your Notes"></textarea>
+                            <button type="submit" class="hero-btn green-btn">Save notes</button>
                         </form>
-                     </div>
-            <!----------------------------------------comment box code end----------------------------------------->
-            <!----------------------------------------right side box code start---------------------------------->
+                    </div>
+                    <!----------------------------------------comment box code end----------------------------------------->
+                </div>
+                <div class="blog-right">
+                    <canvas id="pieChart"></canvas> <!-- Pie Chart -->
+                </div>       
             </div>
-            <div class="blog-right">
-                 <img src="images/pichart.jpeg" width="150%">
-            </div>       
-        </div>
-       </section>
+        </section>
+        
+        <!-- ✅ Include Chart.js Library -->
+        
         </div>
      <!----------------------------------------right side box code end---------------------------------->
         <!--------------------------------------------------------footer---------------------------------------->
@@ -85,5 +87,7 @@
             }
         </script> 
       <!------------------------------------------------javascript to togal menu end ----------------------------------------------------------> 
+      <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+      <script src="/charts.js"></script>       
     </body>
 </html>
